@@ -1,0 +1,424 @@
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --border-color: #000;
+    --slip-bg-color: #fff;
+    --slip-width-a4: 210mm; /* Approximate for screen, PDF will handle true A4 */
+    --slip-font-family: Arial, sans-serif; 
+}
+
+html {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: var(--slip-font-family);
+    margin: 0;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--slip-bg-color);
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.app-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.app-header h1 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 2.07em; /* Original: 1.8em */
+}
+
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.form-section {
+    flex: 1;
+    min-width: 280px; /* Adjusted min-width */
+    padding: 20px;
+    background-color: #fdfdff;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.preview-section {
+    flex: 1.5;
+    min-width: 320px; /* Adjusted min-width */
+    padding: 20px;
+    background-color: #fdfdff;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.form-section h2, .preview-section h2 {
+    margin-top: 0;
+    color: var(--primary-color);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.61em; /* Original: 1.4em */
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 6px; /* Slightly more space */
+    font-weight: bold;
+    font-size: 1.035em; /* Original: 0.9em */
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group input[type="time"] {
+    padding: 12px; /* Increased padding for better touch */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1.15em; /* Original: 1em */
+    background-color: #fff;
+    font-weight: bold; /* Make input text bold */
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+.net-weight-display {
+    margin-top: 20px;
+    margin-bottom: 25px;
+    font-size: 1.32em; /* Original: 1.15em */
+    text-align: center;
+}
+
+.net-weight-display strong {
+    color: var(--primary-color);
+}
+
+.pdf-buttons-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically by default */
+    gap: 10px; /* Space between buttons */
+}
+
+.pdf-buttons-container .button-primary {
+    width: 100%; /* Make buttons full width of their container */
+}
+
+
+.button-primary {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 14px 20px; /* Increased padding */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.21em; /* Original: 1.05em */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.button-primary:hover, .button-primary:focus {
+    background-color: #0056b3;
+    outline: none;
+}
+.button-primary:disabled {
+    background-color: #a0c7e8;
+    color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+
+/* Slip Preview Styles */
+.slip-a4-visual {
+    border: 1px solid var(--border-color);
+    background-color: var(--slip-bg-color);
+    padding: 10px; 
+    font-family: var(--slip-font-family);
+    color: #000;
+    width: 100%; 
+    max-width: var(--slip-width-a4); 
+    margin: 0 auto; 
+    font-size: 11.5px; /* Base font size for the slip - Original: 10px */
+    font-weight: bold; /* Make all text in slip preview bold */
+}
+
+.slip-header-top-border, .slip-footer-bottom-border {
+    border-top: 2px solid var(--border-color);
+    margin-bottom: 5px;
+}
+.slip-footer-bottom-border {
+    border-top: none;
+    border-bottom: 2px solid var(--border-color);
+    margin-top: 5px;
+}
+
+
+.slip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.slip-logo-placeholder-left {
+    width: 60px; 
+    height: 40px; 
+    border-right: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.slip-title {
+    text-align: center;
+    font-weight: bold; 
+    font-size: 1.8em; 
+    flex-grow: 1;
+    padding: 0 8px; 
+    line-height: 1.2;
+}
+
+.slip-service {
+    width: 60px; 
+    height: 40px; 
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.service-box {
+    border: 1px solid var(--border-color);
+    padding: 2px;
+    text-align: center;
+    font-size: 0.7em; 
+    line-height: 1.1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.service-box-text {
+    display: inline-block; 
+}
+
+
+.slip-address {
+    text-align: center;
+    font-size: 0.9em; 
+    padding: 3px 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 5px;
+    line-height: 1.2; 
+}
+
+.slip-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 5px;
+    font-size: 0.9em; 
+    table-layout: fixed; 
+}
+
+.slip-table td {
+    border: 1px solid var(--border-color);
+    padding: 3px 5px; 
+    vertical-align: top;
+    word-break: break-word; 
+    overflow-wrap: break-word; 
+}
+
+.slip-table .label-cell {
+    /* Inherits bold */
+}
+.slip-table .value-cell {
+    /* Inherits bold */
+}
+.slip-table .fixed-width-label { width: 15%; } 
+.slip-table .supplier-value-cell { width: 35%; } 
+
+.slip-table .fixed-width-date { width: 10%; text-align: center;}
+.slip-table .fixed-width-time { width: 25%; }
+
+
+.bold-text span, .bold-text {
+    font-weight: bold; 
+}
+
+.slip-conditions {
+    font-size: 0.8em; 
+    padding: 5px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 5px;
+}
+
+.slip-conditions p {
+    margin: 2px 0;
+    line-height: 1.3; 
+}
+
+.slip-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; 
+    padding-top: 5px;
+    font-size: 0.9em; 
+}
+
+.footer-left, .footer-right {
+    flex: 1; 
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.footer-center {
+    flex: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end; 
+    min-height: 40px; 
+}
+
+.operator-signature {
+    font-size: 0.85em; 
+    margin-top: 0; 
+}
+
+/* Responsive adjustments */
+@media (min-width: 600px) { /* On wider screens, PDF buttons side-by-side */
+    .pdf-buttons-container {
+        flex-direction: row; 
+    }
+    .pdf-buttons-container .button-primary {
+        flex: 1; /* Each button takes equal space */
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px; 
+    }
+    .container {
+        padding: 15px; 
+        box-shadow: none; 
+    }
+    .app-header h1 {
+        font-size: 1.84em; 
+    }
+    .main-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .form-section, .preview-section {
+        padding: 15px;
+    }
+    .form-section h2, .preview-section h2 {
+        font-size: 1.5em; 
+        margin-bottom: 15px;
+    }
+    .form-grid {
+        grid-template-columns: 1fr; 
+        gap: 12px;
+    }
+     .form-group input[type="text"],
+     .form-group input[type="number"],
+     .form-group input[type="date"],
+     .form-group input[type="time"] {
+        padding: 12px; 
+        font-size: 1.15em; 
+    }
+    
+    .button-primary { 
+        padding: 15px; 
+        font-size: 1.15em; 
+    }
+
+    .slip-a4-visual {
+        padding: 8px; 
+    }
+    .slip-logo-placeholder-left, .slip-service {
+         width: 45px; 
+         height: 30px; 
+    }
+    .slip-table td {
+        padding: 2px 3px; 
+    }
+    .slip-conditions p {
+        margin: 1px 0;
+        line-height: 1.25;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    .container {
+        padding: 10px;
+        border-radius: 0; 
+    }
+    .app-header h1 {
+        font-size: 1.61em; 
+    }
+     .form-section h2, .preview-section h2 {
+        font-size: 1.38em; 
+    }
+    .form-group label {
+        font-size: 0.98em; 
+    }
+    .slip-a4-visual {
+        font-size: 12.5px; 
+    }
+}

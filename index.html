@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weigh Slip Generator</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.4.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>Weigh Slip Generator</h1>
+        </header>
+
+        <main class="main-content">
+            <section class="form-section" aria-labelledby="form-heading">
+                <h2 id="form-heading">Enter Weigh Slip Details</h2>
+                <form id="weighSlipForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="serialNo">Serial No.:</label>
+                            <input type="text" id="serialNo" name="serialNo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleNo">Vehicle No.:</label>
+                            <input type="text" id="vehicleNo" name="vehicleNo" required list="vehicleNoSuggestions">
+                            <datalist id="vehicleNoSuggestions"></datalist>
+                        </div>
+                        <div class="form-group">
+                            <label for="materialName">Material Name:</label>
+                            <input type="text" id="materialName" name="materialName" required list="materialNameSuggestions">
+                            <datalist id="materialNameSuggestions"></datalist>
+                        </div>
+                        <div class="form-group">
+                            <label for="grossWeight">Gross Weight (KG):</label>
+                            <input type="text" inputmode="decimal" id="grossWeight" name="grossWeight" required placeholder="e.g., 36500 for 36.500">
+                        </div>
+                        <div class="form-group">
+                            <label for="grossDate">Gross Weight Date:</label>
+                            <input type="date" id="grossDate" name="grossDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="outTime">Out Time:</label>
+                            <input type="time" id="outTime" name="outTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tareWeight">Tare Weight (KG):</label>
+                            <input type="text" inputmode="decimal" id="tareWeight" name="tareWeight" required placeholder="e.g., 7800 for 7.800">
+                        </div>
+                        <div class="form-group">
+                            <label for="tareDate">Tare Weight Date:</label>
+                            <input type="date" id="tareDate" name="tareDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inTime">In Time:</label>
+                            <input type="time" id="inTime" name="inTime" required>
+                        </div>
+                    </div>
+                    <div class="form-group net-weight-display">
+                        <strong>Net Weight: <span id="netWeightDisplay">0.000</span> KG</strong>
+                    </div>
+                    <div class="pdf-buttons-container">
+                        <button type="button" id="downloadPdfBtn" class="button-primary">Download Slip (PDF)</button>
+                        <button type="button" id="downloadDualPdfBtn" class="button-primary">Download 2 Slips (PDF)</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="preview-section" aria-labelledby="preview-heading">
+                <h2 id="preview-heading">Slip Preview</h2>
+                <div class="slip-a4-visual" id="slipPreview">
+                    <div class="slip-header-top-border"></div>
+                    <div class="slip-header">
+                        <div class="slip-logo-placeholder-left"></div>
+                        <div class="slip-title">HI-TECH WEIGH BRIDGE</div>
+                        <div class="slip-service">
+                            <div class="service-box">
+                                <span class="service-box-text">
+                                    24<br/>HOUR<br/>SERVICE
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slip-address">
+                        SURVEY NO.1765, ENDHAL VILLAGE, OPP.SAMRAT & BANAS HOTEL, N.H.48. 396430
+                    </div>
+            
+                    <table class="slip-table">
+                        <tbody>
+                            <tr>
+                                <td class="label-cell" colspan="2">SERIAL NO.: <span id="previewSerialNo"></span></td>
+                                <td class="label-cell" colspan="2">VEHICLE NO.: <span id="previewVehicleNo"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell fixed-width-label">SUPPLIER:</td>
+                                <td class="value-cell supplier-value-cell" id="previewSupplier" colspan="1">HI-TECH WEIGH BRIDGE, ENDHAL</td>
+                                <td class="label-cell fixed-width-label">MATERIAL:</td>
+                                <td class="value-cell" id="previewMaterialName" colspan="1"></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">GROSS.: <span id="previewGrossWeight"></span> KG</td>
+                                <td class="label-cell fixed-width-date">DATE</td>
+                                <td class="value-cell" id="previewGrossDate"></td>
+                                <td class="label-cell fixed-width-time">OUT TIME <span id="previewOutTime"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">TARE.: <span id="previewTareWeight"></span> KG</td>
+                                <td class="label-cell fixed-width-date">DATE</td>
+                                <td class="value-cell" id="previewTareDate"></td>
+                                <td class="label-cell fixed-width-time">IN TIME <span id="previewInTime"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell bold-text">NET.: <span id="previewNetWeight"></span> KG</td>
+                                <td class="value-cell"></td>
+                                <td class="value-cell"></td>
+                                <td class="value-cell"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+            
+                    <div class="slip-conditions">
+                        <p>(૧) વજન કરતી વખતે ગાડીમાં ડ્રાઈવર સિવાય અન્ય કોઈ વ્યક્તિ બેઠેલ ન હોવી જોઈએ.</p>
+                        <p>(૨) વજન કાંટા ઉપરથી ગાડી પાસ થયા પછી સંપૂર્ણ જવાબદારી ડ્રાઈવરની રહેશે.</p>
+                        <p>(૩) ગાડીનો એંગલ કે ટર્નીંગ બરાબર ન હોય તો વજનમાં ફેરફાર આવી શકે છે.</p>
+                        <p>(૪) વજન કાંટાનો ઉપયોગ ફક્ત સ્થિર વજન માટે જ કરવો.</p>
+                    </div>
+            
+                    <div class="slip-footer">
+                        <div class="footer-left">FULLY COMPUTERISE</div>
+                        <div class="footer-center">
+                            <div class="operator-signature">Operator's Signature</div>
+                        </div>
+                        <div class="footer-right">GOVT.APPROVED</div>
+                    </div>
+                     <div class="slip-footer-bottom-border"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script type="module" src="index.js"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

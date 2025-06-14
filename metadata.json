@@ -1,0 +1,6 @@
+{
+  "name": "Weigh Slip Generator",
+  "description": "An application to generate and download weigh slips in PDF format, based on user input. The slip format includes details like serial number, vehicle number, gross weight, tare weight, net weight, times, and a visual stamp.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
