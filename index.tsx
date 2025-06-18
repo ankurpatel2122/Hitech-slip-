@@ -369,22 +369,21 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateNetWeight(); 
 });
 
-// Example of how you might use Gemini API in the future (not used for current slip)
-// const API_KEY = process.env.API_KEY; 
-// if (API_KEY) {
-//    const ai = new GoogleGenAI({ apiKey: API_KEY });
-//    async function runGenAI() {
-//        try {
-//            const response = await ai.models.generateContent({
-//                model: "gemini-2.5-flash-preview-04-17",
-//                contents: "Explain what a weigh bridge is in simple terms.",
-//            });
-//            console.log("Gemini Response:", response.text);
-//        } catch (e) {
-//            console.error("Error calling Gemini API:", e);
-//        }
-//    }
-//    // runGenAI(); // Example call
-// } else {
-//    console.warn("API_KEY for GoogleGenAI not found in environment variables.");
-// }
+// Example API call function
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
+async function createSlip(slipData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/slips`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(slipData),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to create slip:", error);
+  }
+}
